@@ -9,7 +9,14 @@ function index(req, res) {
                 message: "Database query failed"
             })
         }
-        res.json(results)
+        
+        const movies = results.map(movie => {
+            return {
+                ...movie,
+                image: req.imagePath + movie.image
+            }
+        })
+        res.json(movies)     
     })
 }
 
@@ -28,7 +35,6 @@ function show(req, res) {
         const movie = results[0]
         if (!movie) {
             return res.status(404).json({
-                error: err.message,
                 message: "Movie does not exist"
             })
         }
@@ -43,10 +49,13 @@ function show(req, res) {
 
             if (reviewResults) {
                 movie.reviews = reviewResults
-                res.json(movie)
+                res.json({
+                    ...movie,
+                    image: req.imagePath + movie.image
+                })
             }
         })
     })
 }
 
-module.exports = { index, show}
+module.exports = { index, show }
