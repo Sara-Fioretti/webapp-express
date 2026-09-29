@@ -9,21 +9,26 @@ function index(req, res) {
                 message: "Database query failed"
             })
         }
-        
+
         const movies = results.map(movie => {
             return {
                 ...movie,
                 image: req.imagePath + movie.image
             }
         })
-        res.json(movies)     
+        res.json(movies)
     })
 }
 
 //SHOW
+
 function show(req, res) {
     const { id } = req.params
-    const sql = " SELECT * FROM movies WHERE id=?"
+    const sql = ` 
+    SELECT M.*, ROUND(AVG(R.vote)) as average_vote
+    FROM movies as M
+    LEFT JOIN reviews as R on M.id = R.movie_id
+    WHERE M.id = ? `;
 
     connection.query(sql, [id], (err, results) => {
         if (err) {
@@ -33,7 +38,7 @@ function show(req, res) {
             })
         }
         const movie = results[0]
-        if (!movie) {
+        if (!movie || movie.id === null) {
             return res.status(404).json({
                 message: "Movie does not exist"
             })
@@ -49,11 +54,12 @@ function show(req, res) {
 
             if (reviewResults) {
                 movie.reviews = reviewResults
-                res.json({
-                    ...movie,
-                    image: req.imagePath + movie.image
-                })
             }
+            movie.average_vote = movie.average_vote ? parseInt(movie.average_vote) :0;
+            res.json({
+                ...movie,
+                image: req.imagePath + movie.image
+            })
         })
     })
 }
