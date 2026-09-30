@@ -1,7 +1,7 @@
 const express = require("express")
 const app = express()
 const port = process.env.PORT || 3000
-const cores = require("cors")
+const cors = require("cors")
 
 const movieRouter = require("./routers/movieRouter")
 const errorsHandler = require("./middlewares/errorsHandler")
@@ -11,7 +11,7 @@ const imagePath = require("./middlewares/imagePath")
 
 app.use(express.static('public'))
 app.use(express.json())
-app.use(cors({ origin: process.env.FE_APP || "http://localhost:5173/" }))
+app.use(cors({ origin: 'http://localhost:5173'}))
 
 
 app.get('/', (req, res) => {

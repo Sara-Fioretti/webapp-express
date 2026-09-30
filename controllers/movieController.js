@@ -64,4 +64,24 @@ function show(req, res) {
     })
 }
 
-module.exports = { index, show }
+//STORE: API per salvare nuova recensione
+function storeReview (req,res){
+const {id} = req.params
+const {tex, name, vote}= req.body
+
+const sql = "INSERT INTO reviews {text, name, vote, movie_id} VALUES (?,?,?,?)"
+connection.query (sql, [text, name, vote, id], (err,results)=>{
+    if(err){
+        return res.status (500).json({
+            error:err.message
+        })
+    }
+    res.status(201)
+    res.json({
+        message:"Review Added",
+        id:results.insertId
+    })
+})
+
+}
+module.exports = { index, show, storeReview }

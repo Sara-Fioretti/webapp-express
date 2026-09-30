@@ -8,5 +8,5 @@ const imagePath = require('../middlewares/imagePath');
 
 router.get ("/", imagePath, movieController.index);
 router.get("/:id", imagePath, movieController.show);
-
+router.get ("/:id/reviews", movieController.storeReview)
 module.exports=router;

@@ -3,11 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start":"node --env-file=.env app.js",
+    "start": "node --env-file=.env app.js",
     "watch": "node --env-file=.env --watch app.js"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
     "mysql2": "^3.24.4",
     "react": "^19.2.8",
